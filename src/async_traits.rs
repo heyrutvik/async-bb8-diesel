@@ -14,7 +14,7 @@ use diesel::{
 use std::future::Future;
 use std::sync::Arc;
 use std::sync::MutexGuard;
-use tokio::task::spawn_blocking;
+use actix_rt::task::spawn_blocking;
 
 /// An async variant of [`diesel::connection::SimpleConnection`].
 #[async_trait]

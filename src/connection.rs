@@ -4,7 +4,7 @@ use crate::{ConnectionError, ConnectionResult};
 use async_trait::async_trait;
 use diesel::r2d2::R2D2Connection;
 use std::sync::{Arc, Mutex, MutexGuard};
-use tokio::task;
+use actix_rt::task;
 
 /// An async-safe analogue of any connection that implements
 /// [`diesel::Connection`].

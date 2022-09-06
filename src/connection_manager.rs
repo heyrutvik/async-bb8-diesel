@@ -4,7 +4,7 @@ use crate::{Connection, ConnectionError, PoolError, PoolResult};
 use async_trait::async_trait;
 use diesel::r2d2::{self, ManageConnection, R2D2Connection};
 use std::sync::{Arc, Mutex, MutexGuard};
-use tokio::task;
+use actix_rt::task;
 
 /// A connection manager which implements [`bb8::ManageConnection`] to
 /// integrate with bb8.
@@ -61,7 +61,7 @@ impl<T: Send + 'static> ConnectionManager<T> {
         F: Send + 'static + FnOnce(&r2d2::ConnectionManager<T>) -> R,
     {
         let cloned = self.inner.clone();
-        tokio::task::spawn_blocking(move || f(&*cloned.lock().unwrap()))
+        actix_rt::task::spawn_blocking(move || f(&*cloned.lock().unwrap()))
             .await
             // Intentionally panic if the inner closure panics.
             .unwrap()
